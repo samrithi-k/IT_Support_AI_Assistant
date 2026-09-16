@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI IT Support Assistant</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+
+            <h1>
+                AI IT Support Assistant
+            </h1>
+
+            <p>
+                Describe your technical problem
+                and get AI-powered troubleshooting help.
+            </p>
+
+        </header>
+
+
+        <section class="card">
+
+            <label for="question">
+                Technical Support Question
+            </label>
+
+            <textarea
+                id="question"
+                maxlength="1000"
+                placeholder="Example: My Wi-Fi is connected but I don't have internet..."
+            ></textarea>
+
+
+            <div class="input-footer">
+
+                <span id="character-count">
+                    0 / 1000
+                </span>
+
+                <button id="submit-button">
+                    Get Troubleshooting Help
+                </button>
+
+            </div>
+
+
+            <p
+                id="error-message"
+                class="error hidden"
+            ></p>
+
+        </section>
+
+
+        <section
+            id="loading"
+            class="card loading hidden"
+        >
+            Processing your support request...
+        </section>
+
+
+        <section
+            id="result"
+            class="hidden"
+        >
+
+            <div class="card">
+
+                <div class="result-header">
+
+                    <h2>
+                        AI Troubleshooting Response
+                    </h2>
+
+                    <span id="ticket-id"></span>
+
+                </div>
+
+
+                <div id="answer"></div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Retrieved Knowledge
+                </h2>
+
+                <pre id="context"></pre>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/static/app.js"></script>
+
+</body>
+
+</html>

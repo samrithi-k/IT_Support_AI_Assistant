@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "problem": "Wi-Fi connected but no internet",
+    "keywords": ["wifi", "wi-fi", "internet", "network", "connection"],
+    "solution": "Check whether other devices have internet access. Restart the router, disconnect and reconnect to Wi-Fi, and verify that the device has a valid network connection."
+  },
+  {
+    "id": 2,
+    "problem": "Laptop running slowly",
+    "keywords": ["slow", "laptop", "performance", "lag", "freezing"],
+    "solution": "Close unnecessary applications, check Task Manager for high CPU or memory usage, disable unnecessary startup applications, and restart the laptop."
+  },
+  {
+    "id": 3,
+    "problem": "Printer not printing",
+    "keywords": ["printer", "printing", "print"],
+    "solution": "Check that the printer is powered on and connected. Verify that the correct printer is selected, clear stuck print jobs, and restart the printer."
+  },
+  {
+    "id": 4,
+    "problem": "VPN not connecting",
+    "keywords": ["vpn", "virtual", "private", "remote", "connection"],
+    "solution": "Check your internet connection, verify your VPN credentials, restart the VPN client, and confirm that the VPN server is available."
+  },
+  {
+    "id": 5,
+    "problem": "External monitor not detected",
+    "keywords": ["monitor", "display", "screen", "hdmi", "external"],
+    "solution": "Check the display cable and input source. Use the operating system display settings to detect the monitor and verify that the display driver is working."
+  },
+  {
+    "id": 6,
+    "problem": "Bluetooth not working",
+    "keywords": ["bluetooth", "wireless", "pairing"],
+    "solution": "Make sure Bluetooth is enabled, restart Bluetooth, remove and re-pair the device, and check whether the Bluetooth driver is working correctly."
+  },
+  {
+    "id": 7,
+    "problem": "Email not sending",
+    "keywords": ["email", "mail", "sending", "outbox"],
+    "solution": "Check the internet connection, verify the recipient address, check the Outbox for stuck messages, and restart the email application."
+  },
+  {
+    "id": 8,
+    "problem": "Application not opening",
+    "keywords": ["application", "app", "software", "opening", "program"],
+    "solution": "Restart the application and computer, check for application updates, and reinstall the application if the problem continues."
+  },
+  {
+    "id": 9,
+    "problem": "Computer has no sound",
+    "keywords": ["audio", "sound", "speaker", "volume", "headphones"],
+    "solution": "Check the volume level and selected audio output device. Reconnect headphones or speakers and verify that the audio driver is working."
+  },
+  {
+    "id": 10,
+    "problem": "Keyboard or mouse not working",
+    "keywords": ["keyboard", "mouse", "input", "usb"],
+    "solution": "Reconnect the device, try another USB port, replace batteries if the device is wireless, and restart the computer."
+  },
+  {
+    "id": 11,
+    "problem": "Browser pages not loading",
+    "keywords": ["browser", "chrome", "website", "webpage", "page"],
+    "solution": "Check internet connectivity, refresh the page, clear the browser cache, disable problematic extensions, and restart the browser."
+  },
+  {
+    "id": 12,
+    "problem": "Disk space is full",
+    "keywords": ["disk", "storage", "space", "full", "drive"],
+    "solution": "Remove unnecessary files, empty the recycle bin, uninstall unused applications, and use the operating system storage cleanup tools."
+  },
+  {
+    "id": 13,
+    "problem": "Software installation failed",
+    "keywords": ["install", "installation", "software", "setup", "installer"],
+    "solution": "Check available disk space, verify that the installer is compatible with the operating system, run it with appropriate permissions, and download a fresh installer if necessary."
+  },
+  {
+    "id": 14,
+    "problem": "Computer frequently restarts",
+    "keywords": ["restart", "reboot", "crash", "shutdown", "restarting"],
+    "solution": "Check for overheating, install pending system updates, inspect recently installed software or drivers, and review system error information."
+  }
+]
