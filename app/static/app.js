@@ -16,15 +16,11 @@ const errorMessage =
 const answer =
     document.getElementById("answer");
 
-const context =
-    document.getElementById("context");
-
-const ticketId =
-    document.getElementById("ticket-id");
-
 const characterCount =
     document.getElementById("character-count");
 
+
+// Character counter
 
 questionInput.addEventListener(
     "input",
@@ -36,6 +32,29 @@ questionInput.addEventListener(
     }
 );
 
+
+// Press Enter to submit
+
+questionInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter"
+            && !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            submitButton.click();
+
+        }
+
+    }
+);
+
+
+// Submit question
 
 submitButton.addEventListener(
     "click",
@@ -54,20 +73,34 @@ submitButton.addEventListener(
         );
 
 
+        // Validation
+
         if (question.length < 5) {
 
-            errorMessage.textContent =
-                "Please enter a technical support question with at least 5 characters.";
-
-            errorMessage.classList.remove(
-                "hidden"
+            showError(
+                "Please describe your technical problem in at least 5 characters."
             );
 
             return;
         }
 
 
+        if (question.length > 1000) {
+
+            showError(
+                "Your question is too long. Please keep it under 1000 characters."
+            );
+
+            return;
+        }
+
+
+        // Loading state
+
         submitButton.disabled = true;
+
+        submitButton.textContent =
+            "Analyzing...";
 
         loading.classList.remove(
             "hidden"
@@ -102,22 +135,16 @@ submitButton.addEventListener(
 
                 throw new Error(
                     data.detail ||
-                    "Unable to process the request."
+                    "Unable to process your support request."
                 );
 
             }
 
 
+            // Display ONLY the solution
+
             answer.textContent =
                 data.answer;
-
-
-            context.textContent =
-                data.retrieved_context;
-
-
-            ticketId.textContent =
-                `Ticket #${data.ticket_id}`;
 
 
             result.classList.remove(
@@ -125,15 +152,26 @@ submitButton.addEventListener(
             );
 
 
+            // Scroll to solution
+
+            setTimeout(
+                () => {
+
+                    result.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                },
+                100
+            );
+
+
         } catch (error) {
 
-            errorMessage.textContent =
+            showError(
                 error.message ||
-                "Something went wrong. Please try again.";
-
-
-            errorMessage.classList.remove(
-                "hidden"
+                "Something went wrong. Please try again."
             );
 
 
@@ -145,7 +183,28 @@ submitButton.addEventListener(
 
             submitButton.disabled = false;
 
+            submitButton.textContent =
+                "Get Troubleshooting Help";
+
         }
 
     }
 );
+
+
+// Error helper
+
+function showError(message) {
+
+    errorMessage.textContent =
+        message;
+
+    errorMessage.classList.remove(
+        "hidden"
+    );
+
+    errorMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}

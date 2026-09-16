@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,17 +10,22 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>AI IT Support Assistant</title>
+    <title>
+        AI IT Support Assistant
+    </title>
 
     <link
         rel="stylesheet"
         href="/static/style.css"
     >
+
 </head>
+
 
 <body>
 
     <main class="container">
+
 
         <header class="header">
 
@@ -28,11 +34,12 @@
             </h1>
 
             <p>
-                Describe your technical problem
-                and get AI-powered troubleshooting help.
+                Get fast, AI-powered troubleshooting
+                help for your technical problems.
             </p>
 
         </header>
+
 
 
         <section class="card">
@@ -41,10 +48,12 @@
                 Technical Support Question
             </label>
 
+
             <textarea
                 id="question"
                 maxlength="1000"
-                placeholder="Example: My Wi-Fi is connected but I don't have internet..."
+                placeholder="Describe your technical problem here..."
+                autocomplete="off"
             ></textarea>
 
 
@@ -54,8 +63,11 @@
                     0 / 1000
                 </span>
 
+
                 <button id="submit-button">
+
                     Get Troubleshooting Help
+
                 </button>
 
             </div>
@@ -69,12 +81,16 @@
         </section>
 
 
+
         <section
             id="loading"
             class="card loading hidden"
         >
+
             Processing your support request...
+
         </section>
+
 
 
         <section
@@ -87,10 +103,8 @@
                 <div class="result-header">
 
                     <h2>
-                        AI Troubleshooting Response
+                        Troubleshooting Solution
                     </h2>
-
-                    <span id="ticket-id"></span>
 
                 </div>
 
@@ -99,18 +113,8 @@
 
             </div>
 
-
-            <div class="card">
-
-                <h2>
-                    Retrieved Knowledge
-                </h2>
-
-                <pre id="context"></pre>
-
-            </div>
-
         </section>
+
 
     </main>
 

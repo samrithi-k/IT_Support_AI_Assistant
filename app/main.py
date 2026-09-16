@@ -1,5 +1,4 @@
 from pathlib import Path
-import traceback
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
@@ -13,24 +12,19 @@ from .retrieval import retrieve_context
 from .schemas import AskRequest, AskResponse
 
 
-# Create the database tables
 Base.metadata.create_all(bind=engine)
 
 
-# Create the FastAPI application
 app = FastAPI(
     title="AI-Powered IT Support Assistant"
 )
 
 
-# Find the app folder
 BASE_DIR = Path(__file__).resolve().parent
 
-# Find the static folder
 STATIC_DIR = BASE_DIR / "static"
 
 
-# Make CSS and JavaScript available to the browser
 app.mount(
     "/static",
     StaticFiles(directory=STATIC_DIR),
@@ -38,7 +32,6 @@ app.mount(
 )
 
 
-# Create a database session for each request
 def get_db():
 
     db = SessionLocal()
@@ -50,7 +43,6 @@ def get_db():
         db.close()
 
 
-# Home page
 @app.get("/")
 async def home():
 
@@ -59,7 +51,6 @@ async def home():
     )
 
 
-# Health check endpoint
 @app.get("/api/health")
 async def health():
 
@@ -68,7 +59,6 @@ async def health():
     }
 
 
-# Main support endpoint
 @app.post(
     "/api/ask",
     response_model=AskResponse
@@ -78,42 +68,44 @@ async def ask(
     db: Session = Depends(get_db)
 ):
 
-    # Get the user's question
     question = request.question.strip()
 
 
-    # Basic validation
     if len(question) < 5:
 
         raise HTTPException(
             status_code=400,
             detail=(
-                "Question must contain "
-                "at least 5 characters."
+                "Please enter a technical support "
+                "question with at least 5 characters."
             )
         )
 
 
     try:
 
-        # Step 1:
-        # Search the knowledge base
+        # Retrieve the best matching solution
         context = retrieve_context(
             question
         )
 
 
-        # Step 2:
-        # Send question and retrieved context
-        # to Gemini
+        # Generate the response
         answer = await generate_response(
             question,
             context
         )
 
 
-        # Step 3:
-        # Create a ticket
+        if not answer:
+
+            answer = (
+                "I couldn't generate a solution "
+                "for this request. Please try again."
+            )
+
+
+        # Store ticket internally
         ticket = Ticket(
             question=question,
             retrieved_context=context,
@@ -121,8 +113,6 @@ async def ask(
         )
 
 
-        # Step 4:
-        # Save the ticket
         db.add(ticket)
 
         db.commit()
@@ -130,8 +120,7 @@ async def ask(
         db.refresh(ticket)
 
 
-        # Step 5:
-        # Send the result back to the frontend
+        # Return response to frontend
         return AskResponse(
             ticket_id=ticket.id,
             answer=answer,
@@ -139,38 +128,19 @@ async def ask(
         )
 
 
-    except RuntimeError as error:
+    except HTTPException:
 
-        # Undo any incomplete database operation
+        raise
+
+
+    except Exception:
+
         db.rollback()
-
-        # Show the actual error in the terminal
-        print("========== RUNTIME ERROR ==========")
-        print(type(error).__name__)
-        print(str(error))
-        print("===================================")
 
         raise HTTPException(
             status_code=500,
-            detail=str(error)
-        )
-
-
-    except Exception as error:
-
-        # Undo any incomplete database operation
-        db.rollback()
-
-        # Print the complete error in the terminal
-        print("========== ERROR ==========")
-        print(type(error).__name__)
-        print(str(error))
-        traceback.print_exc()
-        print("============================")
-
-        # Return the actual error to the frontend
-        # temporarily so we can debug it
-        raise HTTPException(
-            status_code=500,
-            detail=str(error)
+            detail=(
+                "Unable to process the support request. "
+                "Please try again."
+            )
         )

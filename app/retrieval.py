@@ -10,6 +10,48 @@ KNOWLEDGE_BASE_PATH = (
 )
 
 
+STOP_WORDS = {
+    "i",
+    "me",
+    "my",
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "am",
+    "was",
+    "were",
+    "do",
+    "does",
+    "did",
+    "how",
+    "what",
+    "why",
+    "can",
+    "could",
+    "would",
+    "should",
+    "to",
+    "of",
+    "for",
+    "in",
+    "on",
+    "with",
+    "and",
+    "or",
+    "but",
+    "it",
+    "this",
+    "that",
+    "have",
+    "has",
+    "been",
+    "be",
+    "please"
+}
+
+
 def load_knowledge_base():
 
     with open(
@@ -23,19 +65,31 @@ def load_knowledge_base():
 
 def tokenize(text):
 
-    return set(
-        re.findall(
-            r"\b[a-zA-Z0-9-]+\b",
-            text.lower()
-        )
+    words = re.findall(
+        r"\b[a-zA-Z0-9]+\b",
+        text.lower()
     )
 
+    return {
+        word
+        for word in words
+        if word not in STOP_WORDS
+    }
 
-def retrieve_context(question, top_k=3):
+
+def retrieve_context(question):
 
     knowledge_base = load_knowledge_base()
 
     question_words = tokenize(question)
+
+    if not question_words:
+
+        return (
+            "No relevant knowledge-base information "
+            "was found for this question."
+        )
+
 
     scored_items = []
 
@@ -43,19 +97,20 @@ def retrieve_context(question, top_k=3):
     for item in knowledge_base:
 
         searchable_text = " ".join(
-            [item["problem"]] +
-            item["keywords"]
+            [
+                item["problem"],
+                *item["keywords"]
+            ]
         )
 
-        item_words = tokenize(
-            searchable_text
+        item_words = tokenize(searchable_text)
+
+        matching_words = (
+            question_words.intersection(item_words)
         )
 
-        score = len(
-            question_words.intersection(
-                item_words
-            )
-        )
+        score = len(matching_words)
+
 
         if score > 0:
 
@@ -70,29 +125,23 @@ def retrieve_context(question, top_k=3):
     )
 
 
-    selected_items = [
-        item
-        for _, item in scored_items[:top_k]
-    ]
-
-
-    if not selected_items:
+    # Require at least two meaningful matching words
+    if (
+        not scored_items
+        or scored_items[0][0] < 2
+    ):
 
         return (
-            "No directly matching knowledge-base "
-            "entry was found."
+            "No relevant knowledge-base information "
+            "was found for this question."
         )
 
 
-    context_parts = []
+    # Return only the strongest match
+    best_item = scored_items[0][1]
 
 
-    for item in selected_items:
-
-        context_parts.append(
-            f"Problem: {item['problem']}\n"
-            f"Solution: {item['solution']}"
-        )
-
-
-    return "\n\n".join(context_parts)
+    return (
+        f"Problem: {best_item['problem']}\n"
+        f"Solution: {best_item['solution']}"
+    )
